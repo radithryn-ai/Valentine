@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For Sanjida</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Playfair Display', serif;
+    background: linear-gradient(135deg, #5f2c82, #8e44ad, #c77dff);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: white;
+}
+
+/* Intro Screen */
+#intro {
+    position: fixed;
+    inset: 0;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 10;
+    transition: opacity 2s ease;
+}
+
+#intro img {
+    max-width: 90%;
+    border-radius: 15px;
+}
+
+#intro p {
+    margin-top: 15px;
+    font-size: 18px;
+}
+
+/* Main Card */
+.card {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(12px);
+    padding: 28px 22px;
+    width: 90%;
+    max-width: 360px;
+    border-radius: 22px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    display: none;
+    position: relative;
+}
+
+h1 {
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+/* Buttons */
+.btn {
+    padding: 12px 26px;
+    font-size: 15px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    margin: 10px;
+    font-family: 'Playfair Display', serif;
+}
+
+#yes {
+    background: #9b59b6;
+    color: white;
+    padding: 14px 32px;
+    font-size: 17px;
+}
+
+#no {
+    background: #6c3483;
+    color: white;
+    position: absolute;
+}
+
+/* Photo */
+#photo {
+    width: 100%;
+    max-width: 230px;
+    border-radius: 16px;
+    margin-top: 18px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Intro Screen -->
+<div id="intro">
+    <img src="intro.jpeg">
+    <p>Tap to continue</p>
+</div>
+
+<!-- Main Valentine Card -->
+<div class="card" id="card">
+
+    <h1>Hello Babygirl</h1>
+
+    <p>
+        I have something special to ask you.<br>
+        Will you be my Valentine?
+    </p>
+
+    <button class="btn" id="yes">Yes</button>
+    <button class="btn" id="no">No</button>
+
+</div>
+
+<script>
+const intro = document.getElementById("intro");
+const card = document.getElementById("card");
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+
+/* Intro Click */
+intro.addEventListener("click", () => {
+    intro.style.opacity = "0";
+    setTimeout(() => {
+        intro.style.display = "none";
+        card.style.display = "block";
+    }, 2000);
+});
+
+/* 15 No Messages */
+let messages = [
+    "Are you really sure?",
+    "Please think again",
+    "Do not say no yet",
+    "Give me one more chance",
+    "Just press yes",
+    "My heart is breaking",
+    "Still saying no?",
+    "Come on, be mine",
+    "Trust me, press yes",
+    "You know you want to",
+    "Do not break my heart",
+    "I am waiting for you",
+    "Please choose me",
+    "This is destiny",
+    "Say yes for us"
+];
+
+let index = 0;
+
+/* Move No Button */
+function moveNo() {
+    let x = Math.random() * (window.innerWidth - 140);
+    let y = Math.random() * (window.innerHeight - 140);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+    noBtn.innerText = messages[index % messages.length];
+    index++;
+}
+
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("click", moveNo);
+
+/* Yes Button */
+yesBtn.addEventListener("click", () => {
+    card.innerHTML = `
+        <h1>Sanjida</h1>
+        <p>
+            Thank you for saying yes.<br>
+            
+        </p>
+        <img src="photo.jpeg" id="photo">
+        <p style="margin-top:16px;">
+            Happy Valentine’s Day
+        </p>
+    `;
+});
+</script>
+
+</body>
+</html>

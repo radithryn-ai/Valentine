@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>For Sanjida</title>
 
 <!-- Google Font -->
@@ -44,6 +43,7 @@ body {
 #intro p {
     margin-top: 15px;
     font-size: 18px;
+    transition: opacity 2s ease;
 }
 
 /* Main Card */
@@ -86,12 +86,18 @@ p {
     color: white;
     padding: 14px 32px;
     font-size: 17px;
+    transition: transform 0.3s;
+}
+
+#yes:hover {
+    transform: scale(1.1);
 }
 
 #no {
     background: #6c3483;
     color: white;
     position: absolute;
+    transition: left 0.3s ease, top 0.3s ease;
 }
 
 /* Photo */
@@ -103,6 +109,19 @@ p {
     box-shadow: 0 5px 20px rgba(0,0,0,0.3);
 }
 
+/* Confetti & kiss emojis */
+.confetti-piece, .kiss {
+    position: fixed;
+    font-size: 20px;
+    pointer-events: none;
+    top: 0;
+    animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
 </style>
 </head>
 
@@ -116,17 +135,13 @@ p {
 
 <!-- Main Valentine Card -->
 <div class="card" id="card">
-
     <h1>Hello Babygirl</h1>
-
     <p>
         I have something special to ask you.<br>
         Will you be my Valentine?
     </p>
-
     <button class="btn" id="yes">Yes</button>
     <button class="btn" id="no">No</button>
-
 </div>
 
 <script>
@@ -138,13 +153,14 @@ const yesBtn = document.getElementById("yes");
 /* Intro Click */
 intro.addEventListener("click", () => {
     intro.style.opacity = "0";
+    intro.querySelector("p").style.opacity = "0";
     setTimeout(() => {
         intro.style.display = "none";
         card.style.display = "block";
     }, 2000);
 });
 
-/* 15 No Messages */
+/* No button messages */
 let messages = [
     "Are you really sure?",
     "Please think again",
@@ -162,13 +178,13 @@ let messages = [
     "This is destiny",
     "Say yes for us"
 ];
-
 let index = 0;
 
-/* Move No Button */
+/* Move No button inside the card */
 function moveNo() {
-    let x = Math.random() * (window.innerWidth - 140);
-    let y = Math.random() * (window.innerHeight - 140);
+    const cardRect = card.getBoundingClientRect();
+    let x = Math.random() * (cardRect.width - noBtn.offsetWidth);
+    let y = Math.random() * (cardRect.height - noBtn.offsetHeight);
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
     noBtn.innerText = messages[index % messages.length];
@@ -178,19 +194,39 @@ function moveNo() {
 noBtn.addEventListener("mouseover", moveNo);
 noBtn.addEventListener("click", moveNo);
 
-/* Yes Button */
+/* Create confetti & kiss emojis */
+function createCelebration() {
+    for (let i = 0; i < 100; i++) {
+        // Confetti
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti-piece");
+        confetti.style.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        confetti.style.left = Math.random() * window.innerWidth + "px";
+        confetti.style.animationDuration = (2 + Math.random() * 2) + "s";
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 4000);
+
+        // Kiss emojis
+        const kiss = document.createElement("div");
+        kiss.classList.add("kiss");
+        kiss.innerText = "💋";
+        kiss.style.left = Math.random() * window.innerWidth + "px";
+        kiss.style.animationDuration = (3 + Math.random() * 2) + "s";
+        kiss.style.fontSize = (16 + Math.random() * 24) + "px";
+        document.body.appendChild(kiss);
+        setTimeout(() => kiss.remove(), 5000);
+    }
+}
+
+/* Yes Button Click */
 yesBtn.addEventListener("click", () => {
     card.innerHTML = `
         <h1>Sanjida</h1>
-        <p>
-            Thank you for saying yes.<br>
-            
-        </p>
+        <p>Thank you for saying yes.<br></p>
         <img src="photo.jpeg" id="photo">
-        <p style="margin-top:16px;">
-            Happy Valentine’s Day
-        </p>
+        <p style="margin-top:16px;">Happy Valentine’s Day</p>
     `;
+    createCelebration(); // trigger confetti & kisses
 });
 </script>
 
